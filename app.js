@@ -1,12 +1,12 @@
-const express = require("express");
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
+const express = require('express')
+const bodyParser = require('body-parser')
+const morgan = require('morgan')
 const mongoose = require('mongoose');
 
 const routes = require('./api/routes/estimator');
 
 // Log Model
-const Log = require('./api/models/Log')
+const Log = require('./api/models/Log');
 
 // Connect to db
 const dbURI = "mongodb://covid19-admin:covid19-admin@ds135427.mlab.com:35427/covid19-estimator"
@@ -19,20 +19,20 @@ db.once('open', function() {
 })
 
 let app = express();
-app.use(express.json())
+app.use(express.json());
 
 // Parse incoming requests data
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(morgan('dev'))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(morgan('dev'));
 
 // Set cors policy
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-Type, Accept, Content-Type, Authorization')
     if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET')
-        return res.status(200).json({})
+        res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+        return res.status(200).json({});
     }
     next()
 })
@@ -42,14 +42,14 @@ app.use((req, res, next) => {
     let timestamp = Math.floor(new Date().getTime() / 1000);
     let time = (new Date().getTime() - new Date(req._startTime).getTime()) / 1000;
     let logLine = `${timestamp}\t\t${req.originalUrl.substring(7)}\t\t done in ${time.toFixed(2)} seconds`;
-    const log = new Log({ log: logLine })
+    const log = new Log({ log: logLine });
 
     log.save()
     .then(log => {
-        next()
+        next();
     })
     .catch(err => {
-        res.status(500).json({ error: err })
+        res.status(500).json({ error: err });
     })
 })
 
@@ -59,7 +59,7 @@ app.use('/api/v1/on-covid-19', routes);
 app.use((req, res, next) => {
     const error = new Error('Not Found');
     error.status = 404;
-    next(error)
+    next(error);
 })
 
 app.use((error, req, res, next) => {

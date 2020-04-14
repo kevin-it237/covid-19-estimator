@@ -6,7 +6,8 @@
   "private": false,
   "scripts": {
     "lint": "eslint ./src/",
-    "start": "nodemon app.js --exec babel-node --"
+    "start": "node app.js",
+    "start:dev": "nodemon app.js --exec babel-node --"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
