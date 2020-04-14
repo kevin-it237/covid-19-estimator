@@ -4,12 +4,12 @@
  * @param {Number} timeToElapse the time to elapse
  */
 const normalizeDuration = (periodType, timeToElapse) => {
-    let time;
-    if (periodType === 'days') {
+    let time = timeToElapse;
+    if (periodType.trim().toLocaleLowerCase() === 'days') {
         time = timeToElapse;
-    } else if (periodType === 'weeks') {
+    } else if (periodType.trim().toLocaleLowerCase() === 'weeks') {
         time = (7 * timeToElapse);
-    } else if (periodType === 'months') {
+    } else if (periodType.trim().toLocaleLowerCase() === 'months') {
         time = (30 * timeToElapse);
     }
     return time;
