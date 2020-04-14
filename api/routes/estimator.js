@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const convert = require('xml-js');
 
 // Logs models
@@ -24,7 +23,12 @@ router.post("/:reponseType?", (req, res, next) => {
 router.get("/logs", (req, res, next) => {
     Log.find({}).exec()
     .then(logs => {
-        res.status(200).json({logs})
+        let logsText = "";
+        logs.forEach(raw => {
+            logsText += raw.log+"\n"
+        });
+        res.header({'Content-Type': 'text/plain;charset=utf-8'})
+        res.status(200).send(logsText)
     })
     .catch(err => {
         return res.status(500).send(err);

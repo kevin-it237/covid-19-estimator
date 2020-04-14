@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 
 // Get all requests and save in the database
 app.use(responseTime((req, res, time) => {
-    let logLine = `${req.method} ${req.originalUrl} ${res.statusCode} ${time}ms`;
+    let logLine = `${req.method} ${req.originalUrl} ${res.statusCode} ${time.toFixed(2)}ms`;
     const log = new Log({ log: logLine })
     // Save the log
     log.save()
