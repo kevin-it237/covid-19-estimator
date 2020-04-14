@@ -22,7 +22,8 @@ const processImpact = (data, severity) => {
     /** total number of available beds */
     const totalAvailableBeds = (data.totalHospitalBeds * 35) / 100;
     /** number of available beds by requested time */
-    const hospitalBedsByRequestedTime = Math.floor(totalAvailableBeds - severeCasesByRequestedTime) + 1;
+    const hospitalBedsByRequestedTime = Math.floor(totalAvailableBeds
+        - severeCasesByRequestedTime) + 1;
 
     // Challenge 3
     /** number of severe positive cases that will require ICU care. */
