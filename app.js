@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-const responseTime = require('response-time')
 
 const routes = require('./api/routes/estimator');
 
@@ -39,12 +38,20 @@ app.use((req, res, next) => {
 })
 
 // Get all requests and save in the database
-app.use(responseTime((req, res, time) => {
-    let logLine = `${req.method} ${req.originalUrl} ${res.statusCode} ${time.toFixed(2)}ms`;
+app.use((req, res, next) => {
+    let timestamp = Math.floor(new Date().getTime() / 1000);
+    let time = (new Date().getTime() - new Date(req._startTime).getTime()) / 1000;
+    let logLine = `${timestamp}\t\t${req.originalUrl.substring(7)}\t\t done in ${time.toFixed(2)} seconds`;
     const log = new Log({ log: logLine })
-    // Save the log
+
     log.save()
-}))
+    .then(log => {
+        next()
+    })
+    .catch(err => {
+        res.status(500).json({ error: err })
+    })
+})
 
 // Routes
 app.use('/api/v1/on-covid-19', routes);
