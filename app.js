@@ -20,6 +20,7 @@ db.once('open', function() {
 
 let app = express();
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'build')));
 
 // Parse incoming requests data
 app.use(bodyParser.json());
@@ -55,6 +56,10 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/v1/on-covid-19', routes);
+
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.use((req, res, next) => {
     const error = new Error('Not Found');
