@@ -18,11 +18,12 @@ const processImpact = (data, severity) => {
 
     // Challenge 2
     /** number of severe positive cases that will require hospitalization */
-    const severeCasesByRequestedTime = Math.round((infectionsByRequestedTime * 15) / 100);
+    const severeCasesByRequestedTime = Math.floor((infectionsByRequestedTime * 15) / 100);
     /** total number of available beds */
-    const totalAvailableBeds = Math.round((data.totalHospitalBeds * 35) / 100);
+    const totalAvailableBeds = (data.totalHospitalBeds * 35) / 100;
     /** number of available beds by requested time */
-    const hospitalBedsByRequestedTime = totalAvailableBeds - severeCasesByRequestedTime;
+    const hospitalBedsByRequestedTime = Math.floor(totalAvailableBeds
+        - ((infectionsByRequestedTime * 15) / 100));
 
     // Challenge 3
     /** number of severe positive cases that will require ICU care. */
