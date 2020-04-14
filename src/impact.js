@@ -13,8 +13,8 @@ const processImpact = (data, severity) => {
     /** get time To Elapse In Days */
     const timeToElapseInDays = normalizeDuration(data.periodType, data.timeToElapse);
     /** infections By Requested Time */
-    const infectionsByRequestedTime = Math.floor(currentlyInfected
-        * (2 ** (timeToElapseInDays / 3)));
+    const infectionsByRequestedTime = currentlyInfected
+        * (2 ** Math.floor(timeToElapseInDays / 3));
 
     // Challenge 2
     /** number of severe positive cases that will require hospitalization */
